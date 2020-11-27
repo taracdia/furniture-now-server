@@ -1,5 +1,6 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const commentSchema = require("./comment");
 
 const furnitureSchema = new Schema({
     name: {
@@ -22,7 +23,8 @@ const furnitureSchema = new Schema({
     description: {
         type: String,
         required: true
-    }
+    },
+    comments: [commentSchema]
 });
 
 const Furniture = mongoose.model("Furniture", furnitureSchema);

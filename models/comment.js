@@ -1,18 +1,17 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
+const userSchema = require("./user");
 
 const commentSchema = new Schema({
-    author: {
-        type: String,//type user
-        required: true
-    },
+    author: [userSchema],
     furniture: {
         type: String, //type furniture
         required: true
     },
     rating: {
         type: Number,
-        //min 1 max 5
+        min: 1,
+        max: 5,
         required: true
     },
     text: {
