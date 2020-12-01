@@ -1,5 +1,5 @@
 const express = require("express");
-const FurnitureType = require("../models/campsite");
+const FurnitureType = require("../models/furnitureType");
 
 const furnitureTypeRouter = express.Router();
 

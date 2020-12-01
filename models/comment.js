@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-const userSchema = require("./user");
+const userSchema = require("./user").schema;
 
-const commentSchema = new Schema({
+const commentSchema = new mongoose.Schema({
     author: [userSchema],
     furniture: {
         type: String, //type furniture
@@ -25,6 +24,5 @@ const commentSchema = new Schema({
     }
 );
 
-const Comment = mongoose.model("Comment", commentSchema);
-
-module.exports = Comment;
+exports.model = mongoose.model("Comment", commentSchema);
+exports.schema = commentSchema;

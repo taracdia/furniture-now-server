@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-const furnitureSchema = require("./furniture");
+const furnitureSchema = require("./furniture").schema;
 
-const furnitureTypeSchema = new Schema({
+const furnitureTypeSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,

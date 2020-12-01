@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
-const Schema = mongoose.Schema;
-const commentSchema = require("./comment");
+const commentSchema = require("./comment").schema;
 require("mongoose-currency").loadType(mongoose);
 const Currency = mongoose.Types.Currency;
 
-const furnitureSchema = new Schema({
+const furnitureSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -31,5 +30,6 @@ const furnitureSchema = new Schema({
 });
 
 const Furniture = mongoose.model("Furniture", furnitureSchema);
-
-module.exports = Furniture;
+exports.schema = furnitureSchema;
+exports.model = Furniture;
+// module.exports = Furniture;
