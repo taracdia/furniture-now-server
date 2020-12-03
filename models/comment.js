@@ -2,11 +2,7 @@ const mongoose = require("mongoose");
 const userSchema = require("./user").schema;
 
 const commentSchema = new mongoose.Schema({
-    author: [userSchema],
-    furniture: {
-        type: String, //type furniture
-        required: true
-    },
+    author: userSchema,
     rating: {
         type: Number,
         min: 1,
@@ -15,8 +11,7 @@ const commentSchema = new mongoose.Schema({
     },
     text: {
         type: String,
-        required: true,
-        unique: true
+        required: true
     }
 },
     {

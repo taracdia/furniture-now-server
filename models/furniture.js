@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
 const commentSchema = require("./comment").schema;
 require("mongoose-currency").loadType(mongoose);
-const Currency = mongoose.Types.Currency;
 
 const furnitureSchema = new mongoose.Schema({
     name: {
@@ -10,7 +9,7 @@ const furnitureSchema = new mongoose.Schema({
         unique: true
     },
     price: {
-        type: Currency,
+        type: mongoose.Types.Currency,//stored as integers so multiply by 100
         required: true,
         min: 0
     },
@@ -32,4 +31,3 @@ const furnitureSchema = new mongoose.Schema({
 const Furniture = mongoose.model("Furniture", furnitureSchema);
 exports.schema = furnitureSchema;
 exports.model = Furniture;
-// module.exports = Furniture;
