@@ -4,6 +4,9 @@ const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
 
+const passport = require("passport");
+const authenticate = require("./authenticate");
+
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const furnitureTypeRouter = require("./routes/furnitureTypeRouter");
@@ -24,6 +27,8 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/furnitureType", furnitureTypeRouter);
 
+app.use(passport.initialize());
+app.use(passport.session());
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -42,31 +47,19 @@ app.use(function(err, req, res, next) {
 });
 
 function auth(req, res, next){
-  console.log(req.headers);
-  const authHeader = req.headers.authorization;
-  if (!authHeader){
-    const err = new Error("You are not authenticated!");
-    res.setHeader("WWW-Authenticate", "Basic");
-    err.status = 401;
-    return next(err);
-  }
-
-  const auth = Buffer.from(authHeader.split(" ")[1], "base64").toString().split(":");
-  const user = auth[0];
-  const pass = auth[1];
-  if (user === "admin" && pass === "password"){
+  if (req.user) {
     return next();
   } else {
-    const err = new Error("You are not authenticated");
-    res.setHeader("WWW-Authenticate", "Basic");
-    err.status = 401;
-    return next(err)
+   const err = new Error("you are not authenticated");
+   err.status = 401;
+   return next(err); 
   }
 }
 
 app.use(auth)
 
 const mongoose = require("mongoose");
+const passport = require("passport");
 const url = "mongodb://localhost:27017/furniture-now";
 const connect = mongoose.connect(url, {
   useCreateIndex: true,
