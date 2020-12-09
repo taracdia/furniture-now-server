@@ -1,5 +1,6 @@
 const express = require("express");
 const FurnitureType = require("../models/furnitureType");
+const authenticate = require("../authenticate");
 
 const furnitureTypeRouter = express.Router();
 
@@ -18,7 +19,7 @@ furnitureTypeRouter.route("/")
     })
     .catch(err => next(err));
 })
-.post((req, res, next) => {
+.post(authenticate.verifyUser, (req, res, next) => {
     FurnitureType.create(req.body)
     .then(furnitureType => {
         console.log("Campsite Created ", furnitureType);
@@ -32,7 +33,7 @@ furnitureTypeRouter.route("/")
     res.statusCode = 403;
     res.end("PUT operations not supported on /furnitureTypes");
 })
-.delete((req, res, next) => {
+.delete(authenticate.verifyUser, (req, res, next) => {
     FurnitureType.deleteMany()
     .then(response => {
         res.statusCode = 200;
@@ -56,7 +57,7 @@ furnitureTypeRouter.route("/:furnitureTypeId")
     res.statusCode = 403;
     res.end(`POST operation not supported on /furnitureTypes/${req.params.furnitureTypeId}`);
 })
-.put((req, res, next) => {
+.put(authenticate.verifyUser, (req, res, next) => {
     FurnitureType.findByIdAndUpdate(req.params.furnitureTypeId, {
         $set: req.body
     }, {new: true})
@@ -67,7 +68,7 @@ furnitureTypeRouter.route("/:furnitureTypeId")
     })
     .catch(e => next(e));
 })
-.delete((req, res, next) => {
+.delete(authenticate.verifyUser, (req, res, next) => {
     FurnitureType.findByIdAndDelete(req.params.furnitureTypeId)
     .then(response => {
         res.statusCode = 200;
@@ -93,7 +94,7 @@ furnitureTypeRouter.route("/:furnitureTypeId/furnitures")
     })
     .catch(e => next(e));
 })
-.post((req, res, next) => {
+.post(authenticate.verifyUser, (req, res, next) => {
     FurnitureType.findById(req.params.furnitureTypeId)
     .then(furnitureType => {
         if(furnitureType){
@@ -117,7 +118,7 @@ furnitureTypeRouter.route("/:furnitureTypeId/furnitures")
     res.statusCode = 403;
     res.end(`PUT operation not supported on /furnitureType/${req.params.furnitureTypeId}/furnitures`)
 })
-.delete((req, res, next) => {
+.delete(authenticate.verifyUser, (req, res, next) => {
     FurnitureType.findById(req.params.furnitureTypeId)
     .then(furnitureType => {
         if(furnitureType){
@@ -165,7 +166,7 @@ furnitureTypeRouter.route("/:furnitureTypeId/furnitures/:furnitureId")
     res.statusCode = 403;
     res.end(`POST operation not supported on /furnitureType/${req.params.furnitureTypeId}/furnitures/${req.params.furnitureId}`);
 })
-.put((req, res, next) => {
+.put(authenticate.verifyUser, (req, res, next) => {
     FurnitureType.findById(req.params.furnitureTypeId)
     .then(furnitureType => {
         if(furnitureType && furnitureType.furnitures.id(req.params.furnitureId)){
@@ -203,7 +204,7 @@ furnitureTypeRouter.route("/:furnitureTypeId/furnitures/:furnitureId")
     })
     .catch(e => next(e));
 })
-.delete((req, res, next) => {
+.delete(authenticate.verifyUser, (req, res, next) => {
     FurnitureType.findById(req.params.furnitureTypeId)
     .then(furnitureType => {
         if(furnitureType && furnitureType.furnitures.id(req.params.furnitureId)){
