@@ -7,7 +7,7 @@ const furnitureTypeSchema = new mongoose.Schema({
         required: true,
         unique: true
     },
-    furnitures: [furnitureSchema]
+    furnitures: [furnitureSchema]//todo: mongoose populate
 });
 
 const FurnitureType = mongoose.model("FurnitureType", furnitureTypeSchema);
