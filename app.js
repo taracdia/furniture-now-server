@@ -11,6 +11,7 @@ const furnitureTypeRouter = require("./routes/furnitureTypeRouter");
 
 const app = express();
 
+//Redirect to secure version if needed
 app.all("*", (req, res, next) => {
   if (req.secure){
     return next();
