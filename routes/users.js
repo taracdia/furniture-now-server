@@ -1,5 +1,6 @@
 const express = require("express");
 const User = require("../models/user");
+const cors = require("./cors");
 
 const router = express.Router();
 
@@ -7,11 +8,11 @@ const passport = require("passport");
 const authenticate = require("../authenticate");
 
 /* GET users listing. */
-router.get("/", authenticate.verifyUser, authenticate.verifyAdmin, function(req, res, next) {
+router.get("/", cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, function(req, res, next) {
   res.send("respond with a resource");
 });
 
-router.post("/signup", (req, res, next) => {
+router.post("/signup", cors.corsWithOptions, (req, res, next) => {
   User.register(
     new User({username: req.body.username}),
     req.body.password,
@@ -31,7 +32,7 @@ router.post("/signup", (req, res, next) => {
   );
 });
 
-router.post("/login", passport.authenticate("local"), (req, res) => {
+router.post("/login", cors.corsWithOptions, passport.authenticate("local"), (req, res) => {
   const token = authenticate.getToken({_id: req.user.id});
   res.statusCode = 200;
   res.setHeader("Content-Type", "application/json");

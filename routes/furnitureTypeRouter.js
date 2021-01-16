@@ -1,6 +1,7 @@
 const express = require("express");
 const FurnitureType = require("../models/furnitureType");
 const authenticate = require("../authenticate");
+const cors = require("./cors");
 
 const furnitureTypeRouter = express.Router();
 
@@ -10,7 +11,8 @@ furnitureTypeRouter.route("/")
     // res.setHeader("Content-Type", "application/json");
 //     next();
 // })
-.get((req, res, next) => {
+.options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
+.get(cors.cors, (req, res, next) => {
     FurnitureType.find()
     .then(campsites => {
         res.statusCode = 200;
@@ -19,7 +21,7 @@ furnitureTypeRouter.route("/")
     })
     .catch(err => next(err));
 })
-.post(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.post(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     FurnitureType.create(req.body)
     .then(furnitureType => {
         console.log("Campsite Created ", furnitureType);
@@ -33,7 +35,7 @@ furnitureTypeRouter.route("/")
     res.statusCode = 403;
     res.end("PUT operations not supported on /furnitureTypes");
 })
-.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     FurnitureType.deleteMany()
     .then(response => {
         res.statusCode = 200;
@@ -44,7 +46,8 @@ furnitureTypeRouter.route("/")
 });
 
 furnitureTypeRouter.route("/:furnitureTypeId")
-.get((req, res, next) => {
+.options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
+.get(cors.cors, (req, res, next) => {
     FurnitureType.findById(req.params.furnitureTypeId)
     .then(furnitureType => {
         res.statusCode = 200;
@@ -57,7 +60,7 @@ furnitureTypeRouter.route("/:furnitureTypeId")
     res.statusCode = 403;
     res.end(`POST operation not supported on /furnitureTypes/${req.params.furnitureTypeId}`);
 })
-.put(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.put(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     FurnitureType.findByIdAndUpdate(req.params.furnitureTypeId, {
         $set: req.body
     }, {new: true})
@@ -68,7 +71,7 @@ furnitureTypeRouter.route("/:furnitureTypeId")
     })
     .catch(e => next(e));
 })
-.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     FurnitureType.findByIdAndDelete(req.params.furnitureTypeId)
     .then(response => {
         res.statusCode = 200;
@@ -79,7 +82,8 @@ furnitureTypeRouter.route("/:furnitureTypeId")
 });
 
 furnitureTypeRouter.route("/:furnitureTypeId/furnitures")
-.get((req, res, next) => {
+.options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
+.get(cors.cors, (req, res, next) => {
     FurnitureType.findById(req.params.furnitureTypeId)
     .then(furnitureType => {
         if (furnitureType){
@@ -94,7 +98,7 @@ furnitureTypeRouter.route("/:furnitureTypeId/furnitures")
     })
     .catch(e => next(e));
 })
-.post(authenticate.verifyUser, (req, res, next) => {
+.post(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
     FurnitureType.findById(req.params.furnitureTypeId)
     .then(furnitureType => {
         if(furnitureType){
@@ -118,7 +122,7 @@ furnitureTypeRouter.route("/:furnitureTypeId/furnitures")
     res.statusCode = 403;
     res.end(`PUT operation not supported on /furnitureType/${req.params.furnitureTypeId}/furnitures`)
 })
-.delete(authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, authenticate.verifyAdmin, (req, res, next) => {
     FurnitureType.findById(req.params.furnitureTypeId)
     .then(furnitureType => {
         if(furnitureType){
@@ -143,7 +147,8 @@ furnitureTypeRouter.route("/:furnitureTypeId/furnitures")
 
 
 furnitureTypeRouter.route("/:furnitureTypeId/furnitures/:furnitureId")
-.get((req, res, next) => {
+.options(cors.corsWithOptions, (req, res) => res.sendStatus(200))
+.get(cors.cors, (req, res, next) => {
     FurnitureType.findById(req.params.furnitureTypeId)
     .then(furnitureType => {
         if (furnitureType && furnitureType.furnitures.id(req.params.furnitureId)){
@@ -204,7 +209,7 @@ furnitureTypeRouter.route("/:furnitureTypeId/furnitures/:furnitureId")
     })
     .catch(e => next(e));
 })
-.delete(authenticate.verifyUser, (req, res, next) => {
+.delete(cors.corsWithOptions, authenticate.verifyUser, (req, res, next) => {
     FurnitureType.findById(req.params.furnitureTypeId)
     .then(furnitureType => {
         if(furnitureType && furnitureType.furnitures.id(req.params.furnitureId)){
