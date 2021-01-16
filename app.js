@@ -8,6 +8,7 @@ const config = require("./config");
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const furnitureTypeRouter = require("./routes/furnitureTypeRouter");
+const uploadRouter = require("./routes/uploadRouter");
 
 const app = express();
 
@@ -33,6 +34,7 @@ app.use(express.static(path.join(__dirname, "public")));
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/furnitureType", furnitureTypeRouter);
+app.use("/imageUpload", uploadRouter);
 
 app.use(passport.initialize());
 
@@ -61,6 +63,6 @@ const connect = mongoose.connect(url, {
   useUnifiedTopology: true
 });
 
-connect.then(() => console.log("connected correclty to server"), err => console.log(err));
+connect.then(() => console.log("connected correctly to server"), err => console.log(err));
 
 module.exports = app;
