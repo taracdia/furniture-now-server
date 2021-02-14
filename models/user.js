@@ -15,7 +15,7 @@ const userSchema = new mongoose.Schema({
 	//TODO: add address stuff?
 });
 
-//TODO: authentication
+//TODO: OAuth
 userSchema.plugin(passportLocalMongoose);
 
 // const User = mongoose.model("User", userSchema);
